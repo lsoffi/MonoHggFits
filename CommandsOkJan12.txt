@@ -1,2 +1,6 @@
-#run signal modle bkg model datacards
+#run signal model bkg model datacards
 ./combine_maker_MonoHgg.sh JAN11MonoHgg --lumi 2.6 --fit-name cic --mc-file output_mc.root
+#run signal model bkg model blinded fits and save output
+./combine_maker_MonoHgg.sh JAN11MonoHgg --lumi 2.6 --fit-name cic --mc-file output_mc.root --fit-background
+
+##to re-do also the template production the previous commands have to be send adding --redo-input 1
