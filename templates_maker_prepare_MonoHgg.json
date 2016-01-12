@@ -1,0 +1,147 @@
+{
+    "#" :"List of fits.",
+    "#" :"General form is <fit-name> : { <fit-config> }",
+        
+    "fits" : {
+        "cic" : {
+            "ndim"       : 2,                                                                "#" : "number of dimensions for the template  ",
+            "bins"       : [ "mass", [100.0,180.0] ],                                       "#" : "kinematic bins in which the fit is run ",
+            "template_binning" : [ 0.0, 0.1, 5.0, 15.0 ],                                    "#" : "template varaible binning              ",
+		
+            "selection"    : "cic",
+            "components" : [ "pp", "pf", "ff" ],                                             "#" : "list of fit components                 ",
+            "dataset_variables" : ["mgg","massCorr","mggEBEB","mggEBEE","mggGen:=mgg","leadPt","subleadPt","leadEta","subleadEta", "leadMatchType", "subleadMatchType"],      "#" : "additional variables to be stored      ",
+            "store_trees" : true,	
+
+            "#" :"categories in which to split the fit       ",
+            "#" :"format is <fit-category-name>: { <config> }",
+            "categories" : {
+                "EBHighR9" : { 
+                    "src"  : "EBHighR9", "#" : "dataset category (or group) to use as input.",
+                     "#" :"instruction for how to fill the templates                                                                     ",
+                     "#" :" format is <condition> : [ <list-of-expressions> ]. the lenght of <list-of-expressions> has to be exactly ndim",
+
+                     "#" :"Pseudo-random-swap.                    ",
+                     "#" :" For even events order is lead,sublead.",
+                     "#" :" For odd events sublead,lead           ",
+                     "fill" : { 
+                     "TMath::Even(event)" :[ "leadChIso", "subleadChIso" ],
+                         "! TMath::Even(event)" :[ "subleadChIso", "leadChIso" ]
+                      }
+                }, 
+                "EBLowR9" : { 
+                    "src"  : "EBLowR9", "#" : "dataset category (or group) to use as input.",
+                     "#" :"instruction for how to fill the templates                                                                     ",
+                     "#" :" format is <condition> : [ <list-of-expressions> ]. the lenght of <list-of-expressions> has to be exactly ndim",
+
+                     "#" :"Pseudo-random-swap.                    ",
+                     "#" :" For even events order is lead,sublead.",
+                     "#" :" For odd events sublead,lead           ",
+                     "fill" : { 
+                     "TMath::Even(event)" :[ "leadChIso", "subleadChIso" ],
+                     "! TMath::Even(event)" :[ "subleadChIso", "leadChIso" ]
+                      }
+                }, 
+                "EEHighR9" : { "src" : "EEHighR9" ,
+                        "#" : "Here first photon is barrel, second is endcap",
+                        "fill" : { 
+                        "TMath::Even(event)" :[ "leadChIso", "subleadChIso" ],
+                        "! TMath::Even(event)" :[ "subleadChIso", "leadChIso" ]
+                       }
+                },
+                "EELowR9" : { "src" : "EELowR9" ,
+                        "#" : "Here first photon is barrel, second is endcap",
+                        "fill" : { 
+                        "TMath::Even(event)" :[ "leadChIso", "subleadChIso" ],
+                        "! TMath::Even(event)" :[ "subleadChIso", "leadChIso" ]
+                       }
+                } 
+            },
+	    "signals" : "__all__", 
+		"truth_selection" : {
+		    "pp" : "leadPrompt  && subleadPrompt",
+		    "pf" : "(leadPrompt && subleadFake) || (subleadPrompt && leadFake)",
+                    "ff" : "leadFake    && subleadFake && ( leadMatchType != 0 || subleadMatchType != 0)",
+                    "all_ff" : "leadFake    && subleadFake"
+			},
+            "templates" : {
+                "pf" : { 
+		        "sel"  : "cic", 
+                        "#" : "pseudo-random swap, but taking care to take the random cone isolation for the signal-region photon",
+                        "#" : "  and the photon isolation for the side-band one                                                  ",
+                        "fill_categories" : { 
+                        "EBHighR9" :{ "leadIsSB && TMath::Even(event)" :    [ "leadChIso", "subleadChIso" ],
+                                "leadIsSB && ! TMath::Even(event)" :    [ "subleadChIso", "leadChIso" ],
+                                "subleadIsSB &&  TMath::Even(event)" : [ "subleadChIso", "leadChIso" ],
+                                "subleadIsSB && ! TMath::Even(event)" : [ "leadChIso", "subleadChIso" ]
+                        },
+                        "EBLowR9" :{ "leadIsSB && TMath::Even(event)" :    [ "leadChIso", "subleadChIso" ],
+                                "leadIsSB && ! TMath::Even(event)" :    [ "subleadChIso", "leadChIso" ],
+                                "subleadIsSB &&  TMath::Even(event)" : [ "subleadChIso", "leadChIso" ],
+                                "subleadIsSB && ! TMath::Even(event)" : [ "leadChIso", "subleadChIso" ]
+                        },
+                        "EEHighR9" :{ "leadIsEB && ! subleadIsEB &&      leadIsSB" : [ "leadChIso", "subleadChIso" ], 
+                                "leadIsEB && ! subleadIsEB &&    subleadIsSB" : [ "leadChIso", "subleadChIso" ], 
+                                "! leadIsEB && subleadIsEB &&   subleadIsSB" : [ "subleadChIso", "leadChIso" ], 
+                                "! leadIsEB && subleadIsEB &&   leadIsSB" : [ "subleadChIso", "leadChIso" ]
+                                },
+                        "EELowR9" :{ "leadIsEB && ! subleadIsEB &&      leadIsSB" : [ "leadChIso", "subleadChIso" ], 
+                                "leadIsEB && ! subleadIsEB &&    subleadIsSB" : [ "leadChIso", "subleadChIso" ], 
+                                "! leadIsEB && subleadIsEB &&   subleadIsSB" : [ "subleadChIso", "leadChIso" ], 
+                                "! leadIsEB && subleadIsEB &&   leadIsSB" : [ "subleadChIso", "leadChIso" ]
+						}
+				}
+                        }			
+		    }
+	}
+},
+    "#" : "---------------------------------------------------------------------------------------------------------------------",
+    "#" : "Template mixing                                                                                                      ",
+    "#" : "---------------------------------------------------------------------------------------------------------------------",
+
+
+    "mix" : { 
+	"kDSinglePho2D" : {
+        "jk_source": 10.0 ,
+        "jk_target": 10.0 ,
+		"target" : "2D",
+		"ptLeadMin" : 100.0, "ptSubleadMin" : 100.0, "massMin" : 200.0,
+		"pt" : "phoPt", "eta" : "phoEta", "phi" : "phoPhi", "energy" : "phoEnergy",
+		"sources" : { 
+		    "pf" : [ "singlePho:p", "singlePho:f" ],
+                    "ff" : [ "singlePho:f1", "singlePho:f2" ]
+		    }, 
+		"replace" : "pho",
+		"type" : "kdtree",
+                "transfer_variables" :["mass", "weightTarget:= weight", "mgg := mass"],
+		"fill_categories" : {
+		    "EBEB" : { "legs" : ["EB","EB"], "rndswap" : true,"rndmatch":0.8, "nNeigh" : 10, "matchWithThreshold" : false,
+			    "useCdfDistance" : true,"targetFraction" : 1.0, "maxWeightTarget" :1.0, "maxWeightCache":1.0 ,
+				"axesWeights" : [1.0,1.0,-1.0],
+			    "match1"  : ["nvtx","log(phoPt)"    ,"TMath::Abs(phoScEta)"    ], 
+			    "match2"  : ["nvtx","log(phoPt)"    ,"TMath::Abs(phoScEta)"    ], 
+			    "target1" : ["nvtx","log(leadPt)"   ,"TMath::Abs(leadScEta)[0.2]"   ], 
+			    "target2" : ["nvtx","log(subleadPt)","TMath::Abs(subleadScEta)[0.2]"]
+			    },
+		    "EBEE" : { "legs" : ["eta_inclusive","eta_inclusive"], "rndswap" : false, "nNeigh" : 10, "matchWithThreshold" : false,
+			    "useCdfDistance" : true, "targetFraction" : 1.0, "maxWeightTarget" :1.0, "maxWeightCache":1.0 ,"rndmatch":0.56,
+			    "axesWeights" : [1.0,1.0,-1.0],
+			    "match1"  : ["phoPhoIso","log(phoPt)" ,"TMath::Abs(phoScEta)"    ], 
+			    "match2"  : ["phoPhoIso","log(phoPt)" ,"TMath::Abs(phoScEta)"    ], 
+			    "target1" : ["(TMath::Abs(leadScEta)<TMath::Abs(subleadScEta))*leadPhoIso + (TMath::Abs(leadScEta)>=TMath::Abs(subleadScEta))*subleadPhoIso[10]",
+					 "log((TMath::Abs(leadScEta)<TMath::Abs(subleadScEta))*leadPt       + (TMath::Abs(leadScEta)>=TMath::Abs(subleadScEta))*subleadPt)",
+					 "(TMath::Abs(leadScEta)<TMath::Abs(subleadScEta))*TMath::Abs(leadScEta)    + (TMath::Abs(leadScEta)>=TMath::Abs(subleadScEta))*TMath::Abs(subleadScEta)"
+					 ],
+			    "target2" : ["(TMath::Abs(leadScEta)<TMath::Abs(subleadScEta))*subleadPhoIso + (TMath::Abs(leadScEta)>=TMath::Abs(subleadScEta))*leadPhoIso[10]",
+					 "log((TMath::Abs(leadScEta)<TMath::Abs(subleadScEta))*subleadPt    + (TMath::Abs(leadScEta)>=TMath::Abs(subleadScEta))*leadPt)",
+					 "(TMath::Abs(leadScEta)<TMath::Abs(subleadScEta))*TMath::Abs(subleadScEta) + (TMath::Abs(leadScEta)>=TMath::Abs(subleadScEta))*TMath::Abs(leadScEta)"
+					 ]
+				}
+		}
+	}
+
+	
+    }
+
+}
+

@@ -1,0 +1,2 @@
+#run signal modle bkg model datacards
+./combine_maker_MonoHgg.sh JAN11MonoHgg --lumi 2.6 --fit-name cic --mc-file output_mc.root
