@@ -39,4 +39,4 @@ cp -r JAN11MonoHgg_cic_default_shapes_lumi_2.6 in the correct release in diphoto
 
 copy the combineall_MonoHgg.sh script in the correct release same directory
 
-./combineall+MonoHgg.sh JAN11MonoHgg_cic_default_shapes_lumi_2.6 0 --hadd -M Asymptotic -t -1 --run expected
+./combineall_MonoHgg.sh JAN11MonoHgg_cic_default_shapes_lumi_2.6 0 --hadd -M Asymptotic -t -1 --run expected
