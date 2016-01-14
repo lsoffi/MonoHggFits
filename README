@@ -29,3 +29,10 @@ https://github.com/lsoffi/MonoHggFits/blob/master/CommandsOkJan12.txt
 https://soffi.web.cern.ch/soffi/plotsMonoH/JAN11MonoHgg/JAN11MonoHgg_cic_default_shapes_lumi_2.6/
 
 Remeber to change the name of the output directory if you want to save plots ion your area
+
+
+Compute limits:
+NB: CMSSW_7_1_5 needed (update instructions on how to compile combine properly)
+cp -r JAN11MonoHgg_cic_default_shapes_lumi_2.6 in the correct release in diphoton/Analysis/macros/
+copy the combineall_MonoHgg.sh script in the correct release same directory
+./combineall+MonoHgg.sh JAN11MonoHgg_cic_default_shapes_lumi_2.6 0 --hadd -M Asymptotic -t -1 --run expected
