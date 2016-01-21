@@ -58,6 +58,13 @@ copy the combineall_MonoHgg.sh script in the correct release same directory
 -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho/ --store-new-only --components all --only-subset cic 
 
 8.3 Fit toys
+#local
 ./bkg_bias_MonoHgg.py --n-toys 1 --store-new-only --components all --models dijet \
 --read-ws ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_toys_from_fit_unbinned.root \
 --fit-toys --fit-name cic --only-subset cic -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho/ --plot-toys-fits
+#batch
+./submit_toys_MonoHgg.sh 8nm ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_toys_from_fit_unbinned.root bias_study_toys_from_fit_1000 1000 2
+
+8.4 Analyze results
+./hadd_toys_MonoHgg.sh bias_study_toys_from_fit_1000
+./bkg_bias_MonoHgg.py --analyze-bias --bias-files bias_study_toys_from_fit_1000/toys.root --bias-labels fit -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho/
