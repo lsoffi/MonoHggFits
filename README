@@ -52,12 +52,12 @@ copy the combineall_MonoHgg.sh script in the correct release same directory
 --only-subset cic --input-dir inputData/ntuples4fit_phomet50/ -o ntuples4fit_phomet50_cic_default_shapes_lumi_2.246_bias_study_input.root --mc-file Output_MC.root
 
 8.2 Throw toys
-./bkg_bias_MonoHgg.py --throw-toys --throw-from-model --n-toys=1 
---models dijet --fit-name cic --read-ws ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_input.root 
--o ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_toys_from_fit_unbinned.root 
+./bkg_bias_MonoHgg.py --throw-toys --throw-from-model --n-toys=1 \
+--models dijet --fit-name cic --read-ws ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_input.root \
+-o ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_toys_from_fit_unbinned.root \
 -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho/ --store-new-only --components all --only-subset cic 
 
 8.3 Fit toys
-./bkg_bias_MonoHgg.py --n-toys 1 --store-new-only --components all --models dijet 
---read-ws ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_toys_from_fit_unbinned.root 
+./bkg_bias_MonoHgg.py --n-toys 1 --store-new-only --components all --models dijet \
+--read-ws ntuples4fit_pho_cic_default_shapes_lumi_2.246_bias_study_toys_from_fit_unbinned.root \
 --fit-toys --fit-name cic --only-subset cic -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho/ --plot-toys-fits
