@@ -74,6 +74,8 @@ copy the combineall_MonoHgg.sh script in the correct release same directory
 
 
 SHORT INSTRUCTIONS STEPS 1-6:
+#copy input files
+cp -r /afs/cern.ch/work/s/soffi/public/4Margaret/ntuples4fit_phoMETcat50_80
 #produce ws and datacards
 ntuples4fit_phoMETcat50_80 is the name of the directory = <name of the dir>. The structure of the input has to be:
 inputData/<name of the dir>/
