@@ -68,3 +68,15 @@ copy the combineall_MonoHgg.sh script in the correct release same directory
 8.4 Analyze results
 ./hadd_toys_MonoHgg.sh bias_study_toys_from_fit_1000
 ./bkg_bias_MonoHgg.py --analyze-bias --bias-files bias_study_toys_from_fit_1000/toys.root --bias-labels fit -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho/
+
+
+
+
+
+SHORT INSTRUCTIONS STEPS 1-6:
+#produce ws and datacards
+ntuples4fit_phoMETcat50_80 is the name of the directory = <name of the dir>. The structure of the input has to be:
+inputData/<name of the dir>/
+./combine_maker_METCAT.sh ntuples4fit_phoMETcat50_80 --lumi 2.246 --fit-name cic --mc-file Output_MC.root --redo-input 1
+#produce plots (at the end i get a crash and still to fix.. but plots are produced properly)
+./combine_maker_METCAT.sh ntuples4fit_phoMETcat50_80 --lumi 2.246 --fit-name cic --mc-file Output_MC.root --fit-background
