@@ -82,3 +82,12 @@ inputData/<name of the dir>/
 ./combine_maker_METCAT.sh ntuples4fit_phoMETcat50_80 --lumi 2.246 --fit-name cic --mc-file Output_MC.root --redo-input 1
 #produce plots (at the end i get a crash and still to fix.. but plots are produced properly)
 ./combine_maker_METCAT.sh ntuples4fit_phoMETcat50_80 --lumi 2.246 --fit-name cic --mc-file Output_MC.root --fit-background
+
+SHORT INSTRUCTIONS BIAS STUDY:
+./templates_maker_All.py --load templates_maker_All.json,templates_maker_prepare_All.json --only-subset cic --input-dir inputData/ntuples4fit_boostmet80 -o ntuples4fit_boostmet80_cic_default_shapes_lumi_2.246_bias_study_input.root --mc-file Output_MC.root        
+
+./bkg_bias_MonoHgg.py --throw-toys --n-toys=1000 --models pow --fit-name cic --read-ws ntuples4fit_boostmet80_cic_default_shapes_lumi_2.246_bias_study_input.root -o ntuples4fit_boostmet80_cic_default_shapes_lumi_2.246_bias_study_toys_from_mc_unbinned.root -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_boostmet80 --store-new-only --components all --only-subset ci
+
+./bkg_bias_MonoHgg.py --n-toys 1000 --store-new-only --components all --models pow --read-ws ntuples4fit_boostmet80_cic_default_shapes_lumi_2.246_bias_study_toys_from_mc_unbinned.root --fit-toys --fit-name cic --only-subset cic -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_boostmet80
+
+ ./bkg_bias_MonoHgg.py --analyze-bias --bias-files ntuples4fit_boostmet80_cic_default_shapes_lumi_2.246_bias_study_toys_from_mc_unbinned_new.root -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_boostmet80 --bias-label mc
