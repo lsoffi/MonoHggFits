@@ -174,7 +174,7 @@ class CombineApp(TemplatesApp):
                                     help="Background shapes",
                                     ),
                         make_option("--default-model",dest="default_model",action="store",type="string",
-                                    default="pow",
+                                    default="dijet",
                                     help="Default background mode : [%default]",
                                     ),
                         make_option("--data-source",dest="data_source",action="store",type="string",
