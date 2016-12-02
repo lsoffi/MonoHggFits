@@ -1,0 +1,13 @@
+
+
+
+./templates_maker_MonoHgg.py --load templates_maker_MonoHgg.json,templates_maker_prepare_MonoHgg.json --only-subset cic --input-dir ntuples4fit_pho_met120 -o ntuples4fit_pho_met120_bias_study_input.root--mc-file Output_MC.root
+
+
+./bkg_bias_MonoHgg.py --throw-toys  --n-toys=1000 --models dijet --fit-name cic  --read-ws  ntuples4fit_pho_met120_bias_study_input.root -o ntuples4fit_pho_met120_bias_study_toys_from_fit_unbinned.root  -O  ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho_met120 --store-new-only --components all --only-subset cic
+
+./bkg_bias_MonoHgg.py --n-toys 1000 --store-new-only --components all --models dijet --read-ws ntuples4fit_pho_met105_bias_study_toys_from_fit_unbinned.root --fit-toys --fit-name cic --only-subset cic -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho_met105
+
+./bkg_bias_MonoHgg.py --analyze-bias --bias-files ntuples4fit_pho_met120_bias_study_toys_from_fit_unbinned_new.root 
+--bias-labels fit -O ~/www/plotsMonoH/BiasStudy/ntuples4fit_pho_met120
+
